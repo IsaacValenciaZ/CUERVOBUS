@@ -75,14 +75,14 @@ const MovingCarMap = () => {
         showsUserLocation={true}
         followsUserLocation={true}
         initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: 19.34908657148796,
+          longitude: -99.4750113181596,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-      >
+      > 
         <Marker
-          coordinate={location || { latitude: 37.78825, longitude: -122.4324 }}
+          coordinate={location || { latitude: 19.34908657148796, longitude: -99.4750113181596 }}
           title="Coche en movimiento"
           image={isTripStarted ? require('../../assets/camion.png') : null}
         />
