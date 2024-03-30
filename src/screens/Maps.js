@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, Alert, StyleSheet, TouchableOpacity,Image, TextInput, Button} from 'react-native';
-import MapView, { Marker, Polyline } from 'react-native-maps';
+import { View, Text, Alert, StyleSheet, TouchableOpacity,Image } from 'react-native';
+import MapView, { Marker, Polyline, MapType } from 'react-native-maps';
 import * as Location from 'expo-location';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -12,10 +12,7 @@ const Maps = ({ navigation }) => {
   const [coordinates, setCoordinates] = useState([]);
   const [permissionsGranted, setPermissionsGranted] = useState(false); // Estado para verificar permisos
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [origin, setOrigin] = useState('');
-  const [destination, setDestination] = useState('');
-  const [distance, setDistance] = useState(null);
-  const [route, setRoute] = useState([]);
+
   const ApiKey = "pk.eyJ1IjoiZWR3aW5mdiIsImEiOiJjbHR4Znpqb2MwNjdhMmxvYWw2bmRpdmFuIn0.SsfxPwjognvykdTq9DE3UA";
   
   useEffect(() => {
@@ -98,38 +95,6 @@ const Maps = ({ navigation }) => {
     }
   };
 
-  const calculateDistance = async () => {
-    try {
-      const responseOrigin = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${origin}.json?access_token=${ApiKey}`);
-      const responseDestination = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${destination}.json?access_token=${ApiKey}`);
-  
-      const originData = await responseOrigin.json();
-      const destinationData = await responseDestination.json();
-  
-      const originCoords = originData.features[0].center;
-      const destinationCoords = destinationData.features[0].center;
-  
-      const responseRoute = await fetch(`https://api.mapbox.com/directions/v5/mapbox/driving/${originCoords[0]},${originCoords[1]};${destinationCoords[0]},${destinationCoords[1]}.json?access_token=${ApiKey}`);
-      const routeData = await responseRoute.json();
-  
-      const distance = routeData.routes[0].distance;
-      const route = routeData.routes[0].geometry.coordinates;
-  
-      setDistance(distance);
-      setRoute(route);
-  
-      mapRef.current.animateToRegion({
-        latitude: originCoords[1],
-        longitude: originCoords[0],
-        latitudeDelta: 0.1,
-        longitudeDelta: 0.1,
-      });
-    } catch (error) {
-      console.error('Error calculating distance:', error);
-    }
-  };
-  
-
   return (
     <View style={{ flex: 1 }}>
       {permissionsGranted ? (
@@ -168,13 +133,7 @@ const Maps = ({ navigation }) => {
             </Marker>
  
           )}
-          {route > 0 && (
-          <Polyline
-            coordinates={route.map(([longitude, latitude]) => ({ latitude, longitude }))}
-            strokeColor="orange" // fallback for when `strokeColors` is not supported by the map-provider
-            strokeWidth={6}
-          />
-        )}
+          
          
         </MapView>
       ) : (
@@ -183,50 +142,29 @@ const Maps = ({ navigation }) => {
         
       )}
 
-      <TouchableOpacity style={styles.informacion}>
-          <Icon name="bell" size={20} color="#fff"  onPress={() => navigation.navigate('student')}/>
-        </TouchableOpacity>
+
 
       <View style={styles.menu} //Barra de Menu
       >  
         <TouchableOpacity style={styles.menuItem}>
-          <Icon name="user" size={30} color="#fff"  onPress={() => navigation.navigate('student')}/>
+          <Icon name="user" size={30} color="black"  onPress={() => navigation.navigate('student')}/>
         </TouchableOpacity>
         <TouchableOpacity style={styles.menuItem}  onPress={goToCurrentLocation}  //Manda a la ubiacion del usuario
         >
         <Icon style={styles.ubicacion}  name="location-arrow" size={30} color="#000"  />
       </TouchableOpacity>
         <TouchableOpacity style={styles.menuItem}>
-          <Icon name="car" size={30} color="#fff" />
+          <Icon name="car" size={30} color="black" onPress={() => navigation.navigate('carro')} />
         </TouchableOpacity>
+       
       </View>
-      
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Origen"
-          value={origin}
-          onChangeText={setOrigin}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Destino"
-          value={destination}
-          onChangeText={setDestination}
-        />
-        <Button title="Calcular distancia" onPress={calculateDistance} />
-      </View>
-      {distance && (
-        <Text style={styles.distanceText}>Distancia: {distance} metros</Text>
-      )}
-
     </View>
 
     
   );
 };
 
-
+export default Maps
 
 const styles = StyleSheet.create({
   container: {
@@ -244,7 +182,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     width: '100%',
     padding: 10,
-    backgroundColor: 'black',
+    backgroundColor: 'white',
   },
   menuItem: {
     alignItems: 'center',
@@ -257,16 +195,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     color:'white'
   },
-  informacion: {
-    position: 'absolute',
-    right:10,
-    padding:15,
-    top:50,
-    borderRadius: 100,
-    backgroundColor: 'grey',
-    color:'white'
-  }
+
 
 });
 
-export default Maps;

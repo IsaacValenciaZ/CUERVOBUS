@@ -2,9 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Welcome from './src/screens/Welcome';
 import Login from './src/screens/Login';
-import Signup from './src/screens/Signup';
 import Maps from './src/screens/Maps';
 import Student from './src/screens/Student';
+import Carro from './src/screens/Carro';
+import Conductor from './src/screens/Conductor';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -36,13 +37,19 @@ export default function App() {
             headerShown:false
           }
         }/>
-        <Stack.Screen name="signup" component={Signup}
+        <Stack.Screen name="student" component={Student} 
         options={
           {
             headerShown:false
           }
         }/>
-        <Stack.Screen name="student" component={Student} 
+         <Stack.Screen name="carro" component={Carro} 
+        options={
+          {
+            headerShown:false
+          }
+        }/>
+         <Stack.Screen name="conductor" component={Conductor} 
         options={
           {
             headerShown:false

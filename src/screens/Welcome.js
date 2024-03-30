@@ -1,9 +1,8 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
-import pattern from '../../assets/pattern.png'
-import pattern2 from '../../assets/pattern2.png'
+
 import pattern3 from '../../assets/pattern3.png'
-import Logo from '../../assets/Logo.jpg'
+
 import Logo2 from '../../assets/Logo2.png'
 import { button2 } from '../common/button'
 
