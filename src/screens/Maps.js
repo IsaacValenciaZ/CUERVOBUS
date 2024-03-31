@@ -13,7 +13,7 @@ const Maps = ({ navigation }) => {
   const [permissionsGranted, setPermissionsGranted] = useState(false); // Estado para verificar permisos
   const [currentLocation, setCurrentLocation] = useState(null);
 
-  const ApiKey = "pk.eyJ1IjoiZWR3aW5mdiIsImEiOiJjbHR4Znpqb2MwNjdhMmxvYWw2bmRpdmFuIn0.SsfxPwjognvykdTq9DE3UA";
+  const ApiKey = "";
   
   useEffect(() => {
     // Función para solicitar permiso de ubicación
